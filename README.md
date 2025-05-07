@@ -85,8 +85,6 @@ weather/
 
 - Lazy loading for components
 - Code splitting
-- Bundle optimization
-- Gzip compression
 - Image optimization
 
 ## Contributing 🤝
