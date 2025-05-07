@@ -87,10 +87,6 @@ weather/
 - Code splitting
 - Image optimization
 
-## License 📝
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgments 🙏
 
 - Weather data provided by OpenWeather API
