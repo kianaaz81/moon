@@ -9,6 +9,7 @@ import mist3d from '../../assets/mistweather.png';
 import drizzle3d from '../../assets/Drizzleweather.png';
 import thunder3d from '../../assets/Thunderstormweather.png';
 import { useThemeContext } from '../../context/themeContext';
+import { useLanguageContext } from '../../context/languageContext';
 
 interface ForecastItem {
     dt: number;
@@ -36,33 +37,33 @@ const weather3dIcons: Record<string, string> = {
 };
 
 const Forecast: React.FC<ForecastProps> = ({ data }) => {
-  const {mode}=useThemeContext();
-  const {t} = useTranslation(); 
+  const {colors}=useThemeContext();
+  const {t , i18n} = useTranslation(); 
+  const {numberFormat} = useLanguageContext();
 
   const getTranslatedDay = (timestamp: number) => {
-    const dayName = new Date(timestamp * 1000).toLocaleDateString('en-US', { weekday: 'long' });
-    return t(`days.${dayName}`);
+    const locale = i18n.language === 'fa' ? 'fa-IR' : 'en-US';
+    const dayName = new Date(timestamp * 1000).toLocaleDateString(locale, { weekday: 'long' });
+    return dayName;
   };
 
   return (
     <Box sx={{ 
-      m: 3, 
+      m: 5, 
       width: '100%' ,  
-      bgcolor: mode === 'dark' ? '#292f44' : '#e1e9ee' , 
-      height:{xs: 300 , sm: 370 , md: 470},
+      bgcolor: colors.bgColorMain, 
       borderRadius: 4,
+      px: { xs: 1, sm: 4 },
+      py: { xs: 2, sm: 3 },
       mx: {xs: 0, sm: 0.5},
-      boxShadow:  mode === 'dark'
-      ? '0 2px 12px 0 rgba(31, 38, 135, 0.30)'
-      : '0 2px 12px 0 rgba(31, 38, 135, 0.10)',
+      boxShadow:  colors.shadow,
       }}>
-      <Typography  gutterBottom 
+      <Typography  
+      gutterBottom 
       sx={{
         fontSize:{ xs: 18 , sm: 24}, 
         fontWeight:600 , 
         pl: {xs: 2 , sm: 5},
-        pr: {xs: 2 , sm: 5},
-        pt: {xs: 2 , sm: 3},
          }}>
         {t('forecast')}
       </Typography>
@@ -71,12 +72,11 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'nowrap',
+          overflowX: 'hidden',
           width: '100%',
           height: {xs: 220 , sm: 280 , md: 380},
           pl: {xs:0 , sm: 4},
-          pr: {xs:0 , sm: 4},
-          pt:{xs:1 , sm: 3}
-
+          pt:{xs:0.5 , sm: 2}
         }}
       >
         {data.map((item, index) => {
@@ -87,15 +87,15 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
               key={index}
               elevation={3}
               sx={{
-                flex: '1 1 0', 
-                minWidth: {xs: 80 , sm: 150},
+                flex: 1, 
+                minWidth: 0,
                 mx: 1,
                 p: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 borderRadius: 2,
-                bgcolor: mode === 'dark' ? '#3f4861' : '#cdd9e0',
+                bgcolor: colors.bgColorForecast,
                 boxSizing: 'border-box',
               }}
             >
@@ -104,9 +104,9 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
               align="center" 
               noWrap 
               sx={{ 
-                fontSize: { xs: 12, sm: 20 }  , 
+                fontSize: { xs: 12, sm: 16 , md: 20}  , 
                 fontWeight: {xs : 200 , sm: 500} , 
-                pt: 3
+                pt: 2
                 }}>
                 {getTranslatedDay(item.dt)}
               </Typography>
@@ -114,10 +114,8 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
                 sx={{ 
                   width: '40%', 
                   border: 'none',
-                  bgcolor: mode == 'dark' ?' rgb(172, 172, 172) ':'rgba(0, 0, 0, 0.25)',
-                  boxShadow: mode === 'dark' 
-                  ? '0px 8px 8px 1.5px rgb(172, 172, 172)' 
-                  : '0px 8px 8px 1.5px rgba(0, 0, 0, 0.25)',
+                  bgcolor: colors.bgColorForecast,
+                  boxShadow: colors.shadowForecast,
                   my: 1 
                 }} 
               />
@@ -125,8 +123,8 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
               sx={{    
                 my: { xs: 2, sm: 2 },
                 height: { xs: 60 , sm: 80, md: 150 }, 
-                pt: {md : 5}
-                 }}>
+                 }}
+                 >
                 <img
                   src={icon3d}
                   alt={main}
@@ -139,8 +137,7 @@ const Forecast: React.FC<ForecastProps> = ({ data }) => {
                 fontSize: { xs: 14, sm: 18 },
                 pt: {md : 4}
                  }}>
-                  
-                {Math.round(item.main.temp)}°C
+                  {new Intl.NumberFormat(numberFormat).format(Math.round(item.main.temp))}°C
               </Typography>
             </Paper>
           );

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 export const ModeComponent =()=>{
      const {mode , setMode}=useThemeContext();
      const { t } = useTranslation(); 
+     
 return(
     <Box sx={{ display: 'flex', gap: 1, mt: 1, mb: 2 }}>
               <Button
@@ -19,9 +20,7 @@ return(
                   gap: 1 , 
                   color: mode === 'light' ? '#2196f3' :'#8895a0',
                   borderColor:  mode === 'light' ? '#2196f3' : '#ccc',
-                }}
-                
-              >
+                }}>
                 <LightModeOutlinedIcon fontSize="small"/>
                 {t('light')}
               </Button>
@@ -34,8 +33,7 @@ return(
                   textTransform: 'none',
                   color: mode === 'dark' ? '#2196f3' :'#8895a0',
                   borderColor:  mode === 'dark' ? '#2196f3' : '#ccc',
-                }}
-              >
+                }}>
                 <DarkModeOutlinedIcon  fontSize="small"/>
                 {t('dark')}
               </Button>

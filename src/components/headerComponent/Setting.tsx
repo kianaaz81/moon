@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguageContext } from "../../context/languageContext";
 
 const Setting=()=>{
-   const {mode}=useThemeContext();
+   const {colors}=useThemeContext();
    const { direction } = useLanguageContext();
    const [open , setOpen]= useState<boolean>(false);
    const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Setting=()=>{
              justifyContent: 'center',
              border: ' 1px solid #cfd8dc',
              p:2.5,
-             bgcolor:  mode === 'light' ? '#f0f8fa' :'#292f45', 
+             bgcolor:  colors.background, 
              cursor: 'pointer',
              '&:hover': {
              },
@@ -52,9 +52,8 @@ const Setting=()=>{
             width: 200,
             p: 2,
             borderRadius: '8px',
-            color: mode === 'dark' ? '#fff' : '#000',  
-            boxShadow:
-            '0px 8px 16px rgba(0, 0, 0, 0.12), 0px 3px 6px rgba(0, 0, 0, 0.08)',
+            color: colors.text,  
+            boxShadow: colors.shadow,
             zIndex: 10,
           }}
         >
@@ -77,12 +76,12 @@ const Setting=()=>{
             <Button 
               variant="text" 
               sx={{
-                color: mode === 'dark' ? '#fff' : '#3d4852' ,
+                color: colors.text,
                 display: 'flex',
                 textTransform: 'none',
                 fontSize: 16,
                 justifySelf: 'start' 
-              }}
+              }}  
               onClick={() => navigate('/')}
             >
               <LogoutOutlinedIcon/>

@@ -4,7 +4,6 @@ import Main from "../components/mainComponent/MainDashboard";
 import FooterDashboard from "../components/FooterDashboard";
 import { CircularProgress, Box } from '@mui/material';
 
-// Lazy load HeaderDashboard
 const HeaderDashboard = React.lazy(() => import("../components/headerComponent/HeaderDashboard"));
 
 interface CurrentWeather {
@@ -67,7 +66,13 @@ const Dashboard: React.FC = () => {
   }, [city]);
 
   return (
-    <React.Fragment>
+    <Box sx={{ 
+      display: 'flex', 
+      flexDirection: 'column',
+      minHeight: '100vh',
+      position: 'relative',
+      pb: '60px'
+    }}>
       <Suspense fallback={
         <Box sx={{ 
           display: 'flex', 
@@ -83,7 +88,7 @@ const Dashboard: React.FC = () => {
       </Suspense>
       <Main loading={loading} error={error} current={current} forecast={forecast} />
       <FooterDashboard />
-    </React.Fragment>
+    </Box>
   );
 };
 

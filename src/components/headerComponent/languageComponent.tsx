@@ -36,6 +36,5 @@ return(
                 {t('fa')}
               </Button>
             </Box>
-
-)
-}
+         )
+       }

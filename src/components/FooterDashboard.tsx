@@ -1,30 +1,41 @@
 import { Box, Typography } from "@mui/material"
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import { useThemeContext } from "../context/themeContext";
+import { useLanguageContext } from "../context/languageContext";
 
 const FooterDashboard = () => {
-    const {mode} = useThemeContext();
-    const { i18n}=useTranslation();
+    const { colors } = useThemeContext();
+    const { direction, fontFamily, numberFormat } = useLanguageContext();
 
-    const locale = i18n.language === 'fa' ? 'fa-IR' : 'en-US';
     const date = new Date();
-    const day= date.toLocaleDateString(locale , {weekday: 'long'});
-    const time= date.toLocaleDateString(locale , {hour: '2-digit' , minute: '2-digit'});
+    const day = date.toLocaleDateString(numberFormat, {weekday: 'long'});
+    const time = date.toLocaleDateString(numberFormat, {hour: '2-digit', minute: '2-digit'});
 
     return (
         <Box 
         sx={{
-            display:"flex" ,
-            justifyContent:"end", 
-            alignItems:"end", 
-            p:4 , 
-            boxShadow: mode === 'dark' 
-            ? '0px 0px 10px 0px rgb(110, 110, 110)' 
-            : '0px 0px 10px 0px rgba(0, 0, 0, 0.25)',
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '60px',
+            display: "flex",
+            justifyContent: "end", 
+            alignItems: "end", 
+            p: 2,
+            bgcolor: colors.background,
+            boxShadow: colors.shadow,
+            zIndex: 1000,
+            fontFamily: fontFamily
+        }}>
+            <CalendarMonthOutlinedIcon sx={{color: colors.text, mr: 1}}/>
+            <Typography sx={{ 
+                fontFamily: fontFamily,
+                direction: direction
             }}>
-            <CalendarMonthOutlinedIcon sx={{color: mode === 'dark' ? '#f3f4f7' : '#003464' , mr: 1}}/>
-            <Typography>{time} {day}</Typography>
+                {time} {day}
+            </Typography>
         </Box>
     )
 }

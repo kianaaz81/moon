@@ -1,8 +1,10 @@
 import React from "react";
 import CurrentWeather from "./CurrentWeather";
-import { Box, Typography, CircularProgress } from '@mui/material';
+import { Box , CircularProgress } from '@mui/material';
 import WeatherChart from "./weatherChart";
 import ForecastWeather from "./Forecast"; 
+import Lottie from "lottie-react";
+import nonDataFoundAnimation from "../../Animation - 1746707980850.json";
 
 interface MainProps {
     loading: boolean;
@@ -36,26 +38,43 @@ interface MainProps {
 const Main: React.FC<MainProps> = ({ loading, error, current, forecast }) =>{
     return(
       <React.Fragment>
-        <Box p={2}>
+        <Box sx={{ 
+          p: { xs: 1, sm: 2, md: 3 },
+          width: '100%',
+          maxWidth: '1400px',
+          mx: 'auto'
+        }}>
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center', 
             alignItems: 'center',
+            pt: 2
           }}>
             {loading && <CircularProgress />}
-            {error && <Typography color="error" variant="h6">{error}</Typography>}
+            {error && 
+            (<Lottie 
+            animationData={nonDataFoundAnimation} 
+            style={{ width: 150, height: 100 }}
+            loop={true} 
+            />
+            )}
           </Box>
           
           <Box sx={{
+            display: 'grid',
+          }}>
+          <Box sx={{
             display: 'flex', 
             justifyContent: 'center', 
-            flexDirection: {xs: 'column', sm: 'row', md: 'row'}
+            flexDirection: { xs: 'column', sm: 'row'},
           }}>
             {current && <CurrentWeather data={current} />}
             <WeatherChart/>
           </Box>
         
           {forecast.length > 0 && <ForecastWeather data={forecast} />}
+          </Box>
+
         </Box>
       </React.Fragment>
     )

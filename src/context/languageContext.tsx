@@ -7,6 +7,8 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   direction: 'rtl' | 'ltr';
+  fontFamily: string;
+  numberFormat: string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -19,25 +21,34 @@ export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({childre
       localStorage.getItem('direction') as 'rtl' | 'ltr' || 'ltr'
     );
 
+    const fontFamily = language === 'fa' ? "'Vazirmatn', 'sans-serif'" : "'Inter', 'system-ui', 'sans-serif'";
+    const numberFormat = language === 'fa' ? 'fa-IR' : 'en-US';
+
     useEffect(() => {
-        // Set initial direction based on language
         const newDirection = language === 'fa' ? 'rtl' : 'ltr';
         setDirection(newDirection);
         document.documentElement.dir = newDirection;
         localStorage.setItem('direction', newDirection);
-    }, []);
+        document.documentElement.style.fontFamily = fontFamily;
+    }, [language]);
 
     const setLanguage = (lang: Language) => {
         i18n.changeLanguage(lang);
         setLanguageState(lang);
-        // Update direction when language changes
         const newDirection = lang === 'fa' ? 'rtl' : 'ltr';
         setDirection(newDirection);
         document.documentElement.dir = newDirection;
+        document.documentElement.style.fontFamily = lang === 'fa' ? "'Vazirmatn', 'sans-serif'" : "'Inter', 'system-ui', 'sans-serif'";
     };
 
     return (
-        <LanguageContext.Provider value={{language, setLanguage, direction}}>
+        <LanguageContext.Provider value={{
+            language, 
+            setLanguage, 
+            direction,
+            fontFamily,
+            numberFormat
+        }}>
             {children}
         </LanguageContext.Provider>
     );
